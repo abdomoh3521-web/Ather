@@ -1,4 +1,4 @@
-const CACHE_NAME = 'athar-v3';
+const CACHE_NAME = 'athar-v4'; // تم التحديث للإصدار الرابع لضمان مسح الكاش القديم
 const urlsToCache = [
   './',
   './index.html',
@@ -29,11 +29,12 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  // تخطي الطلبات الخاصة بالصوتيات لأنها كبيرة جداً
+  // تخطي الطلبات الخاصة بالصوتيات لمنع تحميلها بالكامل في ذاكرة الكاش
   if (event.request.url.includes('.mp3')) return;
 
-  // استراتيجية (Network First) لطلبات الـ API (القرآن والمواقيت)
-  if (event.request.url.includes('api.alquran.cloud') || event.request.url.includes('api.aladhan.com') || event.request.url.includes('mp3quran.net/api')) {
+  // استراتيجية "الشبكة أولاً" (Network First) لملف HTML وروابط الـ API
+  // هذا هو التعديل الذي يضمن ظهور التحديثات الجديدة دائماً عند وجود إنترنت
+  if (event.request.mode === 'navigate' || event.request.url.includes('api.alquran.cloud') || event.request.url.includes('api.aladhan.com') || event.request.url.includes('mp3quran.net/api')) {
     event.respondWith(
       fetch(event.request)
         .then(response => {
@@ -41,12 +42,12 @@ self.addEventListener('fetch', event => {
           caches.open(CACHE_NAME).then(cache => cache.put(event.request, resClone));
           return response;
         })
-        .catch(() => caches.match(event.request)) // في حالة انقطاع النت، يجلب من الكاش
+        .catch(() => caches.match(event.request)) // في حالة عدم وجود نت، يفتح النسخة المخزنة
     );
     return;
   }
 
-  // الاستراتيجية العادية لباقي الملفات (Cache First)
+  // الاستراتيجية العادية لباقي الملفات (Cache First) لتسريع التطبيق مثل الصور والخطوط
   event.respondWith(
     caches.match(event.request).then(cachedResponse => {
       return cachedResponse || fetch(event.request).then(networkResponse => {

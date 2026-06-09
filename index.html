@@ -245,6 +245,103 @@
         .counter-btn:active { transform: scale(0.9); }
         .counter-btn.done { background: var(--primary); cursor: default; }
 
+        /* --- تصميم إشعار التثبيت (PWA Install Banner) --- */
+        .install-banner {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            padding: 15px 20px;
+            width: 90%;
+            max-width: 450px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(0,0,0,0.05);
+            direction: rtl;
+        }
+        .install-banner.hidden {
+            top: -100px;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .close-install {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(255, 77, 77, 0.4);
+            transition: var(--transition);
+        }
+        .close-install:hover {
+            transform: scale(1.1);
+        }
+        .install-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            gap: 15px;
+        }
+        .install-icon {
+            background: var(--primary);
+            color: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            flex-shrink: 0;
+        }
+        .install-text {
+            flex-grow: 1;
+        }
+        .install-text h4 {
+            margin: 0 0 4px 0;
+            color: var(--text-dark);
+            font-size: 18px;
+            font-weight: 800;
+        }
+        .install-text p {
+            margin: 0;
+            color: var(--text-gray);
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        .install-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+        .install-btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(4,107,70,0.3);
+        }
+
         @media (max-width: 768px) {
             .nav-links { display: none; }
             .bottom-nav { display: flex; }
@@ -261,6 +358,22 @@
         <source src="background.mp4" type="video/mp4">
     </video>
     <div class="video-overlay"></div>
+
+    <div id="install-banner" class="install-banner hidden">
+        <button class="close-install" onclick="closeInstallBanner()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="install-content">
+            <div class="install-icon">
+                <i class="fa-solid fa-leaf"></i>
+            </div>
+            <div class="install-text">
+                <h4>تطبيق أَثَر</h4>
+                <p>أضف التطبيق لشاشتك الرئيسية لتجربة أسرع</p>
+            </div>
+            <button class="install-btn" id="install-button">تثبيت</button>
+        </div>
+    </div>
 
     <header>
         <div class="nav-container">
@@ -925,7 +1038,46 @@
             }
         }
 
-        // --- 8. Push Notifications & Reminders ---
+        // --- 8. PWA Install Logic ---
+        let deferredPrompt;
+        const installBanner = document.getElementById('install-banner');
+        const installBtn = document.getElementById('install-button');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // منع ظهور شريط التثبيت الافتراضي المزعج
+            e.preventDefault();
+            // حفظ الحدث لاستخدامه لاحقاً
+            deferredPrompt = e;
+            
+            // إظهار إشعار التثبيت المخصص بعد 3 ثواني
+            setTimeout(() => {
+                if(installBanner) installBanner.classList.remove('hidden');
+            }, 3000);
+        });
+
+        if(installBtn) {
+            installBtn.addEventListener('click', async () => {
+                if (!deferredPrompt) return;
+                
+                // إخفاء الإشعار
+                installBanner.classList.add('hidden');
+                
+                // إظهار نافذة التثبيت الرسمية
+                deferredPrompt.prompt();
+                
+                // انتظار استجابة المستخدم
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+                
+                deferredPrompt = null;
+            });
+        }
+
+        function closeInstallBanner() {
+            if(installBanner) installBanner.classList.add('hidden');
+        }
+
+        // --- 9. Push Notifications & Reminders ---
         function requestNotificationPermission() {
             if (!("Notification" in window)) {
                 alert("متصفحك لا يدعم الإشعارات.");
