@@ -93,7 +93,7 @@
         .prayer-box span { font-weight: bold; font-size: 16px; color: var(--text-dark); display: block; }
         .prayer-box small { color: var(--text-gray); font-size: 14px;}
 
-        /* Pomodoro Timer - Updated with Progress Circle */
+        /* Pomodoro Timer */
         .pomodoro-card { max-width: 500px; margin: 0 auto; padding: 40px; text-align: center; }
         .pomo-circle {
             width: 250px; height: 250px; border-radius: 50%;
@@ -163,6 +163,7 @@
         .options-list { max-height: 250px; overflow-y: auto; list-style: none; margin: 0; padding: 0; }
         .option-item { padding: 12px 15px; cursor: pointer; transition: 0.2s; border-bottom: 1px solid rgba(0,0,0,0.05); color: var(--text-gray); font-size: 14px; font-weight: 500; }
         .option-item:hover, .option-item.selected { background: rgba(4, 107, 70, 0.1); color: var(--primary); font-weight: bold; }
+        
         .player-controls { display: flex; align-items: center; gap: 15px; }
         .play-pause-btn { width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); color: white; border: none; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(4,107,70,0.3); transition: var(--transition); flex-shrink: 0; position: relative; }
         .play-pause-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(4,107,70,0.4); }
@@ -179,10 +180,43 @@
         .ayahs-container { padding: 40px 30px; font-family: 'Uthmanic', 'Amiri', serif; font-size: 26px; line-height: 2.4; text-align: justify; text-align-last: center; direction: rtl; letter-spacing: 0.05em; position: relative; z-index: 1; }
         .ayah-wrapper { display: inline; cursor: pointer; transition: 0.3s ease; padding: 2px; border-radius: 5px; }
         .ayah-wrapper:hover { background: rgba(4, 107, 70, 0.05); }
-        .ayah-wrapper.active-ayah { background: rgba(4, 107, 70, 0.15); color: var(--primary-light); font-weight: bold; box-shadow: 0 2px 10px rgba(4, 107, 70, 0.1); }
+        .ayah-wrapper.active-ayah { background: rgba(4, 107, 70, 0.15); color: var(--primary-light); font-weight: bold; box-shadow: 0 2px 10px rgba(4, 107, 70, 0.1); border-radius: 8px; }
         .ayah { display: inline; color: var(--text-dark); font-family: 'Uthmanic', 'Amiri', serif; }
         .red-word { color: #cc0000; font-family: 'Uthmanic', 'Amiri', serif; }
         .ayah-number { display: inline-block; margin: 0 4px; font-size: 22px; color: #046b46; font-family: 'Tajawal', sans-serif; font-weight: 500; vertical-align: middle; }
+
+        /* Modern Custom Select Styles (للـ Memorize Section) */
+        
+        .memorize-settings-card { padding: 25px; margin-bottom: 30px; border-top: 4px solid var(--primary); position: relative; z-index: 20; } /* أضفنا طبقة أعلى للكارت نفسه */
+        .memorize-settings-card h3 { color: var(--primary); margin-bottom: 20px; font-size: 20px; display: flex; align-items: center; gap: 10px; }
+        .settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .setting-item { display: flex; flex-direction: column; gap: 8px; position: relative; }
+        .setting-item label { font-size: 14px; font-weight: bold; color: var(--text-gray); display: flex; align-items: center; gap: 5px;}
+
+        .modern-select { position: relative; width: 100%; font-family: 'Tajawal', sans-serif; z-index: 50; }
+        .modern-select.open { z-index: 999; } /* 🌟 السطر ده سحري عشان القائمة المفتوحة تطفو فوق كل العناصر التانية */
+        .modern-select-trigger { padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(4,107,70,0.2); background: rgba(255,255,255,0.9); font-size: 15px; color: var(--text-dark); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: var(--transition); }
+        .modern-select-trigger:hover, .modern-select.open .modern-select-trigger { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(4,107,70,0.1); background: #fff; }
+        .modern-select-trigger i { color: var(--primary); transition: transform 0.3s ease; }
+        .modern-select.open .modern-select-trigger i { transform: rotate(180deg); }
+
+        .modern-options { position: absolute; top: 110%; left: 0; right: 0; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); border: 1px solid rgba(4,107,70,0.1); max-height: 220px; overflow-y: auto; opacity: 0; visibility: hidden; transition: all 0.2s ease; transform: translateY(-10px); z-index: 999; }
+        .modern-select.open .modern-options { opacity: 1; visibility: visible; transform: translateY(0); }
+
+        .modern-option { padding: 12px 15px; font-size: 15px; cursor: pointer; transition: 0.2s; border-bottom: 1px solid rgba(0,0,0,0.03); color: var(--text-gray); font-weight: 500; text-align: right; }
+        .modern-option:hover { background: rgba(4,107,70,0.05); color: var(--primary); font-weight: bold; padding-right: 22px; }
+        .modern-option:last-child { border-bottom: none; }
+
+        /* Scrollbar for modern options */
+        .modern-options::-webkit-scrollbar { width: 6px; }
+        .modern-options::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
+        .modern-options::-webkit-scrollbar-thumb { background: rgba(4,107,70,0.3); border-radius: 10px; }
+        .modern-options::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+        /* Scrollbar for modern options */
+        .modern-options::-webkit-scrollbar { width: 6px; }
+        .modern-options::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
+        .modern-options::-webkit-scrollbar-thumb { background: rgba(4,107,70,0.3); border-radius: 10px; }
+        .modern-options::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
         /* Tasks Section */
         .tasks-container { max-width: 600px; margin: 0 auto; padding: 30px; }
@@ -289,7 +323,7 @@
         .install-btn { background: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; font-family: 'Tajawal', sans-serif;}
         .close-install { position: absolute; top: -8px; right: -8px; background: #ff4d4d; color: white; border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; font-size: 12px; }
 
-        /* Toast Notifications (الإشعارات الداخلية) */
+        /* Toast Notifications */
         .toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90%; max-width: 400px; }
         .toast { background: rgba(4, 107, 70, 0.95); color: white; padding: 15px 20px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); font-weight: bold; animation: toastIn 0.4s ease, toastOut 0.4s ease 4s forwards; display: flex; align-items: center; gap: 12px; backdrop-filter: blur(10px); }
         .toast i { font-size: 20px; color: var(--secondary); }
@@ -466,12 +500,66 @@
             </div>
             <div id="search-results" style="margin-bottom: 30px;"></div>
 
-            <div class="glass-panel" style="padding: 30px;">
-                <h3 style="color: var(--primary); margin-bottom: 20px; text-align: center;"><i class="fa-solid fa-headphones"></i> اختر سورة للحفظ</h3>
-                <select id="memorize-surah-select" onchange="loadMemorizeSurah(this.value)" style="width:100%; padding: 12px; border-radius: 12px; border: 1px solid var(--primary); outline: none; font-family: 'Tajawal'; font-size: 16px; margin-bottom: 20px; background: rgba(255,255,255,0.9);">
-                    <option value="">-- اختر السورة --</option>
-                </select>
-                <div id="memorize-ayahs-container" class="ayahs-container" style="display:none; font-size: 26px; line-height: 2.2;"></div>
+            <div class="glass-panel memorize-settings-card">
+                <h3><i class="fa-solid fa-gear"></i> لوحة تحكم الحفظ</h3>
+                
+                <div class="settings-grid">
+                    
+                    <div class="setting-item">
+                        <label><i class="fa-solid fa-book-quran"></i> السورة</label>
+                        <div class="modern-select" id="custom-surah-select">
+                            <div class="modern-select-trigger" onclick="toggleModernSelect('custom-surah-select', event)">
+                                <span>-- اختر السورة للحفظ --</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                            <div class="modern-options" id="mem-surah-options">
+                                </div>
+                            <input type="hidden" id="memorize-surah-select" value="">
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label><i class="fa-solid fa-microphone-lines"></i> القارئ المعلم</label>
+                        <div class="modern-select" id="custom-reciter-select">
+                            <div class="modern-select-trigger" onclick="toggleModernSelect('custom-reciter-select', event)">
+                                <span>مشاري العفاسي</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                            <div class="modern-options">
+                                <div class="modern-option" onclick="selectModernOption('custom-reciter-select', 'ar.alafasy', 'مشاري العفاسي')">مشاري العفاسي</div>
+                                <div class="modern-option" onclick="selectModernOption('custom-reciter-select', 'ar.husary', 'محمود خليل الحصري')">محمود خليل الحصري</div>
+                                <div class="modern-option" onclick="selectModernOption('custom-reciter-select', 'ar.abdulbasitmurattal', 'عبد الباسط عبد الصمد')">عبد الباسط عبد الصمد</div>
+                                <div class="modern-option" onclick="selectModernOption('custom-reciter-select', 'ar.minshawi', 'محمد صديق المنشاوي')">محمد صديق المنشاوي</div>
+                                <div class="modern-option" onclick="selectModernOption('custom-reciter-select', 'ar.mahermuaiqly', 'ماهر المعيقلي')">ماهر المعيقلي</div>
+                            </div>
+                            <input type="hidden" id="memorize-reciter-select" value="ar.alafasy">
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label><i class="fa-solid fa-repeat"></i> تكرار الآية</label>
+                        <div class="modern-select" id="custom-repeat-select">
+                            <div class="modern-select-trigger" onclick="toggleModernSelect('custom-repeat-select', event)">
+                                <span>بدون تكرار</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                            <div class="modern-options">
+                                <div class="modern-option" onclick="selectModernOption('custom-repeat-select', '1', 'بدون تكرار')">بدون تكرار</div>
+                                <div class="modern-option" onclick="selectModernOption('custom-repeat-select', '2', 'مرتين')">مرتين</div>
+                                <div class="modern-option" onclick="selectModernOption('custom-repeat-select', '3', '3 مرات')">3 مرات</div>
+                                <div class="modern-option" onclick="selectModernOption('custom-repeat-select', '5', '5 مرات')">5 مرات</div>
+                                <div class="modern-option" onclick="selectModernOption('custom-repeat-select', '10', '10 مرات')">10 مرات</div>
+                                <div class="modern-option" onclick="selectModernOption('custom-repeat-select', '999', 'لا نهائي (للحفظ العميق)')">لا نهائي (للحفظ العميق)</div>
+                            </div>
+                            <input type="hidden" id="memorize-repeat-select" value="1">
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="glass-panel" style="padding: 20px;">
+                <div id="memorize-ayahs-container" class="ayahs-container" style="display:none; font-size: 26px; line-height: 2.2; padding: 10px;"></div>
                 <audio id="memorize-audio"></audio>
             </div>
         </section>
@@ -666,7 +754,7 @@
 
     <div id="certificate-modal" class="install-banner hidden" style="top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; gap: 15px; text-align: center; max-width: 400px; z-index: 10000; transition: all 0.3s ease;">
         <h3 style="color: var(--primary); margin: 0; font-size: 24px;">🎉 ما شاء الله! بطل!</h3>
-        <p style="margin: 0; color: var(--text-gray); font-size: 16px;">لقد أتممت 5 ساعات من التركيز اليوم. أدخل اسمك لاستخراج شهادة التميز الخاصة بك.</p>
+        <p style="margin: 0; color: var(--text-gray); font-size: 16px;">لقد أتممت 3 ساعات من التركيز اليوم. أدخل اسمك لاستخراج شهادة التميز الخاصة بك.</p>
         <input type="text" id="student-name" placeholder="أدخل اسمك هنا..." style="padding: 12px; border-radius: 10px; border: 1px solid var(--primary); width: 100%; font-family: 'Tajawal', sans-serif; font-size: 16px; outline: none; text-align: center;">
         <button class="install-btn" onclick="generateCertificate()" style="width: 100%; padding: 12px; font-size: 16px;">استخراج الشهادة <i class="fa-solid fa-award"></i></button>
         <button class="close-install" onclick="closeInstallBanner('certificate-modal')" style="top: -10px; right: -10px; width: 30px; height: 30px; font-size: 16px;"><i class="fa-solid fa-xmark"></i></button>
@@ -703,13 +791,11 @@
 
                 localStorage.removeItem('athar_tasks');
                 localStorage.removeItem('athar_adhkar');
-                localStorage.removeItem('athar_focus_time'); // تصفير الساعات المتراكمة لليوم الجديد
-                localStorage.removeItem('athar_cert_earned'); // تفعيل الشهادة لليوم الجديد
+                localStorage.removeItem('athar_focus_time');
+                localStorage.removeItem('athar_cert_earned');
             }
             localStorage.setItem('athar_last_date', today);
             buildCalendar();
-            
-            // تحقق من أيام القيام
             checkQiyamStreak(today);
         }
 
@@ -846,19 +932,16 @@
                 const todayDate = now.toDateString();
                 const notificationKey = todayDate + '_' + nextPrayer.id;
 
-                // إشعار داخلي قبل الصلاة بـ 15 دقيقة
                 if (diffMins <= 15.1 && diffMins > 14.9 && !approachedPrayers[notificationKey]) {
                     showToast(`استعد، اقترب أذان ${nextPrayer.name}`, 'fa-mosque');
                     approachedPrayers[notificationKey] = true;
                 }
 
-                // وقت الأذان الفعلي (إشعار + تشغيل الصوت)
                 if (diffMins <= 0.1 && diffMins > 0 && !notifiedPrayers[notificationKey]) {
                     showToast(`حان الآن موعد ${nextPrayer.name} 🕌`, 'fa-clock');
                     sendNotification("حان وقت الصلاة", `حان الآن موعد ${nextPrayer.name}`);
                     notifiedPrayers[notificationKey] = true;
                     
-                    // تشغيل الصوت الخاص بالبومودورو
                     const sound = document.getElementById('pomo-sound');
                     if(sound) {
                         sound.currentTime = 0;
@@ -957,7 +1040,7 @@
                             localStorage.setItem('athar_focus_time', totalFocusSeconds);
                             updateTotalFocusDisplay();
 
-                            const fiveHoursInSeconds = 60;
+                            const fiveHoursInSeconds = 2 * 60 * 60;
                             if (totalFocusSeconds >= fiveHoursInSeconds && !hasEarnedCertificate) {
                                 document.getElementById('certificate-modal').classList.remove('hidden');
                             }
@@ -1018,7 +1101,7 @@
         <h2>منصة أَثَر للإنتاجية</h2>
         <p>بكل فخر واعتزاز، تشهد المنصة بأن البطل(ة)</p>
         <div class="name">${name}</div>
-        <p>قد أتم بنجاح ومثابرة أكثر من <b>5 ساعات</b> من التركيز والمذاكرة المتواصلة خلال اليوم.<br>سائلين المولى عز وجل له دوام التوفيق والنجاح.</p>
+        <p>قد أتم بنجاح ومثابرة أكثر من <b>3 ساعات</b> من التركيز والمذاكرة المتواصلة خلال اليوم.<br>سائلين المولى عز وجل له دوام التوفيق والنجاح.</p>
         <div class="footer">
             <div>التاريخ: ${todayDate}</div>
             <div>توقيع: إدارة منصة أَثَر</div>
@@ -1097,6 +1180,11 @@
         document.addEventListener('click', function(event) {
             const dropdown = document.getElementById('reciter-dropdown');
             if (dropdown && !dropdown.contains(event.target)) { document.getElementById('options-container').classList.remove('open'); }
+            
+            // إغلاق القوائم المخصصة في قسم الحفظ عند النقر بالخارج
+            if (!event.target.closest('.modern-select')) {
+                document.querySelectorAll('.modern-select').forEach(el => el.classList.remove('open'));
+            }
         });
 
         async function fetchReciters() {
@@ -1144,7 +1232,7 @@
                 const data = await response.json();
                 surahsData = data.data.surahs.references;
                 renderSurahsGrid(surahsData);
-                populateMemorizeSelect(); // تغذية قائمة الحفظ
+                populateMemorizeSelect(); // تغذية قائمة الحفظ المخصصة
                 document.getElementById('quran-loader').style.display = 'none';
             } catch (error) { document.getElementById('quran-loader').innerHTML = 'حدث خطأ في التحميل.'; }
         }
@@ -1215,26 +1303,67 @@
             resetAudioPlayer();
         }
 
-        // --- 4.5 Memorize Section (قسم الحفظ والبحث) ---
+        // --- 4.5 Memorize Section Logic ---
         let memorizeAyahs = [];
         let currentMemorizeIndex = -1;
+        let memCurrentRepeat = 0;
+        let memTargetRepeat = 1;
         const memAudio = document.getElementById('memorize-audio');
 
-        async function populateMemorizeSelect() {
-            const select = document.getElementById('memorize-surah-select');
-            surahsData.forEach(s => {
-                select.innerHTML += `<option value="${s.number}">${s.number}. ${s.name}</option>`;
+        // دوال القوائم المنسدلة المخصصة
+        function toggleModernSelect(id, event) {
+            event.stopPropagation();
+            document.querySelectorAll('.modern-select').forEach(el => {
+                if(el.id !== id) el.classList.remove('open');
             });
+            document.getElementById(id).classList.toggle('open');
         }
 
-        async function loadMemorizeSurah(surahNumber) {
+        function selectModernOption(selectId, value, text) {
+            const selectContainer = document.getElementById(selectId);
+            selectContainer.querySelector('.modern-select-trigger span').innerText = text;
+            const hiddenInput = selectContainer.querySelector('input');
+            hiddenInput.value = value;
+            selectContainer.classList.remove('open');
+            
+            // تنفيذ الإجراء بناءً على القائمة اللي اتغيرت
+            if (selectId === 'custom-surah-select' || selectId === 'custom-reciter-select') {
+                if(document.getElementById('memorize-surah-select').value) {
+                    loadMemorizeSurah();
+                }
+            } else if (selectId === 'custom-repeat-select') {
+                updateRepeatCount();
+            }
+        }
+
+        function updateRepeatCount() {
+            memTargetRepeat = parseInt(document.getElementById('memorize-repeat-select').value) || 1;
+        }
+
+        async function populateMemorizeSelect() {
+            const optionsContainer = document.getElementById('mem-surah-options');
+            optionsContainer.innerHTML = '';
+            surahsData.forEach(s => {
+                optionsContainer.innerHTML += `<div class="modern-option" onclick="selectModernOption('custom-surah-select', '${s.number}', '${s.number}. ${s.name}')">${s.number}. ${s.name}</div>`;
+            });
+            updateRepeatCount();
+        }
+
+        async function loadMemorizeSurah() {
+            const surahNumber = document.getElementById('memorize-surah-select').value;
+            const reciter = document.getElementById('memorize-reciter-select').value;
+            
             if (!surahNumber) return;
+
             const container = document.getElementById('memorize-ayahs-container');
             container.style.display = 'block';
-            container.innerHTML = '<div style="text-align:center; color: var(--primary);"><i class="fa-solid fa-spinner fa-spin"></i> جاري التحميل...</div>';
+            container.innerHTML = '<div style="text-align:center; color: var(--primary); padding: 30px;"><i class="fa-solid fa-spinner fa-spin fa-2x"></i><br>جاري تحميل الآيات...</div>';
+            
+            memAudio.pause();
+            currentMemorizeIndex = -1;
             
             try {
-                const res = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/ar.alafasy`);
+                const res = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/${reciter}`);
                 const data = await res.json();
                 memorizeAyahs = data.data.ayahs;
                 
@@ -1242,17 +1371,21 @@
                 memorizeAyahs.forEach((ayah, index) => {
                     let text = ayah.text;
                     if (surahNumber != 1 && ayah.numberInSurah === 1) text = text.replace(/^بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ\s*/, '');
-                    html += `<div class="ayah-wrapper mem-ayah" id="mem-ayah-${index}" onclick="playMemorizeAyah(${index})"><span class="ayah">${text}</span> <span class="ayah-number">(${ayah.numberInSurah})</span></div> `;
+                    html += `<div class="ayah-wrapper mem-ayah" id="mem-ayah-${index}" onclick="playMemorizeAyah(${index}, true)"><span class="ayah">${text}</span> <span class="ayah-number">(${ayah.numberInSurah})</span></div> `;
                 });
                 container.innerHTML = html;
-                currentMemorizeIndex = -1;
             } catch (e) {
-                container.innerHTML = 'حدث خطأ في التحميل.';
+                container.innerHTML = '<div style="text-align:center; color: red;">حدث خطأ في التحميل، يرجى التحقق من اتصالك.</div>';
             }
         }
 
-        function playMemorizeAyah(index) {
+        function playMemorizeAyah(index, isManualClick = false) {
             if (index < 0 || index >= memorizeAyahs.length) return;
+            
+            if (isManualClick) {
+                memCurrentRepeat = 0; 
+            }
+
             currentMemorizeIndex = index;
             
             document.querySelectorAll('.mem-ayah').forEach(el => el.classList.remove('active-ayah'));
@@ -1266,7 +1399,14 @@
         }
 
         memAudio.addEventListener('ended', () => {
-            playMemorizeAyah(currentMemorizeIndex + 1);
+            memCurrentRepeat++;
+            if (memCurrentRepeat < memTargetRepeat) {
+                memAudio.currentTime = 0;
+                memAudio.play();
+            } else {
+                memCurrentRepeat = 0;
+                playMemorizeAyah(currentMemorizeIndex + 1);
+            }
         });
 
         async function searchAyah() {
