@@ -93,9 +93,35 @@
         .prayer-box span { font-weight: bold; font-size: 16px; color: var(--text-dark); display: block; }
         .prayer-box small { color: var(--text-gray); font-size: 14px;}
 
-        /* Pomodoro Timer */
+        /* Pomodoro Timer - Updated with Progress Circle */
         .pomodoro-card { max-width: 500px; margin: 0 auto; padding: 40px; text-align: center; }
-        .pomo-circle { width: 250px; height: 250px; border-radius: 50%; border: 8px solid var(--primary-light); margin: 0 auto 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.05), var(--shadow); background: white; }
+        .pomo-circle {
+            width: 250px; height: 250px; border-radius: 50%;
+            margin: 0 auto 30px; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            position: relative;
+            background: transparent;
+            box-shadow: var(--shadow);
+            z-index: 1;
+        }
+        .pomo-circle::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) var(--progress, 100%), #e2e8f0 0);
+            z-index: -2;
+        }
+        .pomo-circle::after {
+            content: "";
+            position: absolute;
+            top: 8px; left: 8px; right: 8px; bottom: 8px; 
+            background: white;
+            border-radius: 50%;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+            z-index: -1;
+        }
+
         .pomo-time { font-size: 60px; font-weight: 800; color: var(--text-dark); font-family: monospace; }
         .pomo-status { font-size: 18px; color: var(--text-gray); margin-top: 5px; font-weight: bold; }
         .pomo-controls { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
@@ -179,7 +205,7 @@
         .task-item.completed .task-checkbox { background: var(--primary); border-color: var(--primary); box-shadow: 0 2px 8px rgba(4, 107, 70, 0.4); }
         .task-item.completed .task-checkbox i { opacity: 1; transform: scale(1); }
 
-        /* ---------------- New Planner Section Styles ---------------- */
+        /* Planner Section Styles */
         .planner-layout { display: flex; gap: 20px; flex-direction: column-reverse; max-width: 1000px; margin: 0 auto;}
         @media (min-width: 768px) { .planner-layout { flex-direction: row; } }
         .planner-slots { flex: 2; display: flex; flex-direction: column; gap: 15px; }
@@ -210,7 +236,7 @@
         .delete-task-btn { color: #ff4d4d; background: none; border: none; cursor: pointer; font-size: 14px; opacity: 0.7; padding: 5px; }
         .delete-task-btn:hover { opacity: 1; }
 
-        /* ---------------- New Qiyam Section Styles ---------------- */
+        /* Qiyam Section Styles */
         .qiyam-container { max-width: 600px; margin: 0 auto; }
         .qiyam-header { text-align: center; margin-bottom: 30px; }
         .qiyam-header h2 { font-size: 32px; color: var(--text-dark); margin-bottom: 5px; display: flex; justify-content: center; align-items: center; gap: 10px;}
@@ -263,6 +289,13 @@
         .install-btn { background: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; font-family: 'Tajawal', sans-serif;}
         .close-install { position: absolute; top: -8px; right: -8px; background: #ff4d4d; color: white; border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; font-size: 12px; }
 
+        /* Toast Notifications (الإشعارات الداخلية) */
+        .toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90%; max-width: 400px; }
+        .toast { background: rgba(4, 107, 70, 0.95); color: white; padding: 15px 20px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); font-weight: bold; animation: toastIn 0.4s ease, toastOut 0.4s ease 4s forwards; display: flex; align-items: center; gap: 12px; backdrop-filter: blur(10px); }
+        .toast i { font-size: 20px; color: var(--secondary); }
+        @keyframes toastIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
+
         @media (max-width: 768px) {
             .nav-links { display: none; }
             .bottom-nav { display: flex; }
@@ -310,6 +343,7 @@
             <ul class="nav-links">
                 <li class="nav-item active" onclick="switchPage('home')">الرئيسية</li>
                 <li class="nav-item" onclick="switchPage('quran')">القرآن</li>
+                <li class="nav-item" onclick="switchPage('memorize')">الحفظ</li>
                 <li class="nav-item" onclick="switchPage('study')">التركيز</li>
                 <li class="nav-item" onclick="switchPage('tasks')">المهام</li>
                 <li class="nav-item" onclick="switchPage('planner')">الجدول</li>
@@ -323,6 +357,7 @@
     <div class="bottom-nav">
         <div class="bottom-nav-item active" onclick="switchPage('home')"><i class="fa-solid fa-house"></i><span>الرئيسية</span></div>
         <div class="bottom-nav-item" onclick="switchPage('quran')"><i class="fa-solid fa-book-quran"></i><span>القرآن</span></div>
+        <div class="bottom-nav-item" onclick="switchPage('memorize')"><i class="fa-solid fa-brain"></i><span>الحفظ</span></div>
         <div class="bottom-nav-item" onclick="switchPage('study')"><i class="fa-solid fa-stopwatch"></i><span>التركيز</span></div>
         <div class="bottom-nav-item" onclick="switchPage('tasks')"><i class="fa-solid fa-list-check"></i><span>المهام</span></div>
         <div class="bottom-nav-item" onclick="switchPage('planner')"><i class="fa-solid fa-calendar-day"></i><span>الجدول</span></div>
@@ -422,9 +457,33 @@
             </div>
         </section>
 
+        <section id="page-memorize" class="page">
+            <h2 class="section-title">قسم الحفظ والبحث</h2>
+            
+            <div class="search-box">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" id="search-ayah-input" placeholder="ابحث عن آية أو كلمة..." onkeypress="if(event.key === 'Enter') searchAyah()">
+            </div>
+            <div id="search-results" style="margin-bottom: 30px;"></div>
+
+            <div class="glass-panel" style="padding: 30px;">
+                <h3 style="color: var(--primary); margin-bottom: 20px; text-align: center;"><i class="fa-solid fa-headphones"></i> اختر سورة للحفظ</h3>
+                <select id="memorize-surah-select" onchange="loadMemorizeSurah(this.value)" style="width:100%; padding: 12px; border-radius: 12px; border: 1px solid var(--primary); outline: none; font-family: 'Tajawal'; font-size: 16px; margin-bottom: 20px; background: rgba(255,255,255,0.9);">
+                    <option value="">-- اختر السورة --</option>
+                </select>
+                <div id="memorize-ayahs-container" class="ayahs-container" style="display:none; font-size: 26px; line-height: 2.2;"></div>
+                <audio id="memorize-audio"></audio>
+            </div>
+        </section>
+
         <section id="page-study" class="page">
             <h2 class="section-title">غرف الدراسة (بومودورو)</h2>
             <div class="pomodoro-card glass-panel">
+                
+                <div style="margin-bottom: 20px; color: var(--primary); font-weight: bold; font-size: 18px;">
+                    إجمالي التركيز اليوم: <span id="total-focus-display">0</span> دقيقة
+                </div>
+
                 <div class="pomo-circle">
                     <div class="pomo-time" id="pomo-display">25:00</div>
                     <div class="pomo-status" id="pomo-status">وقت التركيز</div>
@@ -445,6 +504,8 @@
                         <input type="number" id="break-mins" value="5" min="1" max="30" onchange="updatePomoSettings()">
                     </div>
                 </div>
+                
+                <audio id="pomo-sound" src="your-audio-file.mp3" preload="auto"></audio>
             </div>
         </section>
 
@@ -603,7 +664,31 @@
 
     </main>
 
+    <div id="certificate-modal" class="install-banner hidden" style="top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; gap: 15px; text-align: center; max-width: 400px; z-index: 10000; transition: all 0.3s ease;">
+        <h3 style="color: var(--primary); margin: 0; font-size: 24px;">🎉 ما شاء الله! بطل!</h3>
+        <p style="margin: 0; color: var(--text-gray); font-size: 16px;">لقد أتممت 5 ساعات من التركيز اليوم. أدخل اسمك لاستخراج شهادة التميز الخاصة بك.</p>
+        <input type="text" id="student-name" placeholder="أدخل اسمك هنا..." style="padding: 12px; border-radius: 10px; border: 1px solid var(--primary); width: 100%; font-family: 'Tajawal', sans-serif; font-size: 16px; outline: none; text-align: center;">
+        <button class="install-btn" onclick="generateCertificate()" style="width: 100%; padding: 12px; font-size: 16px;">استخراج الشهادة <i class="fa-solid fa-award"></i></button>
+        <button class="close-install" onclick="closeInstallBanner('certificate-modal')" style="top: -10px; right: -10px; width: 30px; height: 30px; font-size: 16px;"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
     <script>
+        // --- 0. نظام الإشعارات الداخلية (Toasts) ---
+        function showToast(message, icon = 'fa-bell') {
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                container.className = 'toast-container';
+                document.body.appendChild(container);
+            }
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 4500);
+        }
+
         // --- 0. نظام حفظ البيانات وتاريخ المهام ---
         function checkNewDay() {
             const today = new Date().toDateString();
@@ -618,6 +703,8 @@
 
                 localStorage.removeItem('athar_tasks');
                 localStorage.removeItem('athar_adhkar');
+                localStorage.removeItem('athar_focus_time'); // تصفير الساعات المتراكمة لليوم الجديد
+                localStorage.removeItem('athar_cert_earned'); // تفعيل الشهادة لليوم الجديد
             }
             localStorage.setItem('athar_last_date', today);
             buildCalendar();
@@ -657,12 +744,15 @@
         function switchPage(pageId) {
             const audioPlayer = document.getElementById('surah-audio');
             if (audioPlayer && !audioPlayer.paused) { pauseAudio(); }
+            
+            const memAudio = document.getElementById('memorize-audio');
+            if (memAudio && !memAudio.paused) { memAudio.pause(); }
 
             document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active');
             
             document.querySelectorAll('.nav-item, .bottom-nav-item').forEach(item => item.classList.remove('active'));
-            const indexMap = { 'home': 0, 'quran': 1, 'study': 2, 'tasks': 3, 'planner': 4, 'qiyam': 5, 'adhkar': 6 };
+            const indexMap = { 'home': 0, 'quran': 1, 'memorize': 2, 'study': 3, 'tasks': 4, 'planner': 5, 'qiyam': 6, 'adhkar': 7 };
             const idx = indexMap[pageId];
             
             if(document.querySelectorAll('.nav-links .nav-item')[idx]) {
@@ -680,6 +770,8 @@
         // --- 2. Prayer Times & Countdown Logic ---
         let timingsData = null;
         let countdownInterval;
+        let notifiedPrayers = {};
+        let approachedPrayers = {};
 
         async function fetchPrayerTimes(lat, lng) {
             try {
@@ -727,9 +819,6 @@
             return `${h}:${m} ${p}`;
         }
 
-       // أضف هذا المتغير خارج الدالة لتتبع الإشعارات المرسلة
-        let notifiedPrayers = {};
-
         function startCountdown() {
             if(countdownInterval) clearInterval(countdownInterval);
             countdownInterval = setInterval(() => {
@@ -751,19 +840,31 @@
                 
                 if(!nextPrayer) { nextPrayer = schedule[0]; isTomorrow = true; }
 
-                // --- المنطق الجديد لإرسال إشعار الصلاة ---
-                // نتحقق إذا كان الوقت المتبقي أقل من دقيقة ولم يتم إرسال إشعار لهذه الصلاة اليوم
                 let diffMins = nextPrayer.time - currentTime;
                 if(isTomorrow) diffMins += 24 * 60;
                 
                 const todayDate = now.toDateString();
                 const notificationKey = todayDate + '_' + nextPrayer.id;
 
+                // إشعار داخلي قبل الصلاة بـ 15 دقيقة
+                if (diffMins <= 15.1 && diffMins > 14.9 && !approachedPrayers[notificationKey]) {
+                    showToast(`استعد، اقترب أذان ${nextPrayer.name}`, 'fa-mosque');
+                    approachedPrayers[notificationKey] = true;
+                }
+
+                // وقت الأذان الفعلي (إشعار + تشغيل الصوت)
                 if (diffMins <= 0.1 && diffMins > 0 && !notifiedPrayers[notificationKey]) {
+                    showToast(`حان الآن موعد ${nextPrayer.name} 🕌`, 'fa-clock');
                     sendNotification("حان وقت الصلاة", `حان الآن موعد ${nextPrayer.name}`);
                     notifiedPrayers[notificationKey] = true;
+                    
+                    // تشغيل الصوت الخاص بالبومودورو
+                    const sound = document.getElementById('pomo-sound');
+                    if(sound) {
+                        sound.currentTime = 0;
+                        sound.play().catch(e => console.log('Audio error:', e));
+                    }
                 }
-                // ------------------------------------------
 
                 document.querySelectorAll('.prayer-box').forEach(b => b.classList.remove('next-prayer'));
                 const nextBox = document.getElementById('box-' + nextPrayer.id);
@@ -786,11 +887,21 @@
             return parseInt(h) * 60 + parseInt(m);
         }
 
-        // --- 3. Pomodoro Timer ---
+        // --- 3. Pomodoro Timer & Certificate Logic ---
         let pomoInterval;
         let pomoTimeLeft = 25 * 60;
+        let totalSessionTime = 25 * 60;
         let isPomoRunning = false;
         let isWorkSession = true;
+
+        let totalFocusSeconds = parseInt(localStorage.getItem('athar_focus_time')) || 0;
+        let hasEarnedCertificate = localStorage.getItem('athar_cert_earned') === new Date().toDateString();
+
+        function updateTotalFocusDisplay() {
+            let mins = Math.floor(totalFocusSeconds / 60);
+            let displayEl = document.getElementById('total-focus-display');
+            if(displayEl) displayEl.innerText = mins;
+        }
 
         function updatePomoDisplay() {
             const m = Math.floor(pomoTimeLeft / 60);
@@ -798,13 +909,20 @@
             document.getElementById('pomo-display').innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
         }
 
+        function updatePomoCircle() {
+            let percent = (pomoTimeLeft / totalSessionTime) * 100;
+            document.querySelector('.pomo-circle').style.setProperty('--progress', `${percent}%`);
+        }
+
         function updatePomoSettings() {
             if(!isPomoRunning) {
                 const workMins = document.getElementById('work-mins').value;
                 pomoTimeLeft = workMins * 60;
+                totalSessionTime = pomoTimeLeft; 
                 isWorkSession = true;
                 document.getElementById('pomo-status').innerText = "وقت التركيز";
                 updatePomoDisplay();
+                updatePomoCircle(); 
             }
         }
 
@@ -820,24 +938,46 @@
                 pomoInterval = setInterval(() => {
                     pomoTimeLeft--;
                     updatePomoDisplay();
+                    updatePomoCircle();
                     
                     if(pomoTimeLeft <= 0) {
                         clearInterval(pomoInterval);
                         isPomoRunning = false;
                         btn.innerHTML = '<i class="fa-solid fa-play"></i> ابدأ';
                         
+                        const sound = document.getElementById('pomo-sound');
+                        if(sound) {
+                            sound.currentTime = 0;
+                            sound.play().catch(e => console.log('Audio error:', e));
+                        }
+
                         if(isWorkSession) {
+                            const workMins = parseInt(document.getElementById('work-mins').value);
+                            totalFocusSeconds += (workMins * 60);
+                            localStorage.setItem('athar_focus_time', totalFocusSeconds);
+                            updateTotalFocusDisplay();
+
+                            const fiveHoursInSeconds = 60;
+                            if (totalFocusSeconds >= fiveHoursInSeconds && !hasEarnedCertificate) {
+                                document.getElementById('certificate-modal').classList.remove('hidden');
+                            }
+
                             sendNotification("بومودورو", "انتهى وقت التركيز! خذ استراحة.");
+                            showToast("انتهى وقت التركيز! خذ استراحة 🌿", "fa-clock");
                             pomoTimeLeft = document.getElementById('break-mins').value * 60;
+                            totalSessionTime = pomoTimeLeft;
                             isWorkSession = false;
                             document.getElementById('pomo-status').innerText = "وقت الاستراحة";
                         } else {
                             sendNotification("بومودورو", "انتهت الاستراحة! عد للتركيز.");
+                            showToast("انتهت الاستراحة! عد للتركيز 💪", "fa-clock");
                             pomoTimeLeft = document.getElementById('work-mins').value * 60;
+                            totalSessionTime = pomoTimeLeft;
                             isWorkSession = true;
                             document.getElementById('pomo-status').innerText = "وقت التركيز";
                         }
                         updatePomoDisplay();
+                        updatePomoCircle();
                     }
                 }, 1000);
             }
@@ -848,6 +988,58 @@
             isPomoRunning = false;
             document.getElementById('pomo-toggle').innerHTML = '<i class="fa-solid fa-play"></i> ابدأ';
             updatePomoSettings();
+        }
+
+        function generateCertificate() {
+            const name = document.getElementById('student-name').value.trim() || 'بطل منصة أَثَر';
+            const todayDate = new Date().toLocaleDateString('ar-EG');
+            
+            const certHTML = `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>شهادة إنجاز - ${name}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; background: #f1f5f9; display: flex; align-items: center; justify-content: center; height: 100vh; font-family: 'Tajawal', sans-serif; }
+        .certificate { background: #ffffff; width: 800px; padding: 60px; border: 15px solid #046b46; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); text-align: center; position: relative; }
+        .certificate::before { content: ''; position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px; border: 2px dashed #d4af37; border-radius: 10px; pointer-events: none; }
+        h1 { color: #046b46; font-size: 55px; margin-bottom: 5px; font-weight: 800; }
+        h2 { color: #d4af37; font-size: 32px; margin-bottom: 40px; font-weight: 700; }
+        p { font-size: 24px; color: #475569; line-height: 1.8; }
+        .name { font-size: 45px; font-weight: 800; color: #1e293b; margin: 25px 0; border-bottom: 3px solid #046b46; display: inline-block; padding-bottom: 10px; min-width: 400px;}
+        .footer { display: flex; justify-content: space-between; margin-top: 60px; font-size: 20px; color: #046b46; font-weight: bold;}
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        <div style="font-size: 50px; color: #046b46; margin-bottom: 15px;">🌿</div>
+        <h1>شهادة إنجاز وتميز</h1>
+        <h2>منصة أَثَر للإنتاجية</h2>
+        <p>بكل فخر واعتزاز، تشهد المنصة بأن البطل(ة)</p>
+        <div class="name">${name}</div>
+        <p>قد أتم بنجاح ومثابرة أكثر من <b>5 ساعات</b> من التركيز والمذاكرة المتواصلة خلال اليوم.<br>سائلين المولى عز وجل له دوام التوفيق والنجاح.</p>
+        <div class="footer">
+            <div>التاريخ: ${todayDate}</div>
+            <div>توقيع: إدارة منصة أَثَر</div>
+        </div>
+    </div>
+</body>
+</html>`;
+
+            const blob = new Blob([certHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `شهادة_أثر_${name.replace(/\s+/g, '_')}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            localStorage.setItem('athar_cert_earned', new Date().toDateString());
+            hasEarnedCertificate = true;
+            closeInstallBanner('certificate-modal');
         }
 
         // --- 4. Quran logic & Audio Player ---
@@ -952,6 +1144,7 @@
                 const data = await response.json();
                 surahsData = data.data.surahs.references;
                 renderSurahsGrid(surahsData);
+                populateMemorizeSelect(); // تغذية قائمة الحفظ
                 document.getElementById('quran-loader').style.display = 'none';
             } catch (error) { document.getElementById('quran-loader').innerHTML = 'حدث خطأ في التحميل.'; }
         }
@@ -1022,6 +1215,91 @@
             resetAudioPlayer();
         }
 
+        // --- 4.5 Memorize Section (قسم الحفظ والبحث) ---
+        let memorizeAyahs = [];
+        let currentMemorizeIndex = -1;
+        const memAudio = document.getElementById('memorize-audio');
+
+        async function populateMemorizeSelect() {
+            const select = document.getElementById('memorize-surah-select');
+            surahsData.forEach(s => {
+                select.innerHTML += `<option value="${s.number}">${s.number}. ${s.name}</option>`;
+            });
+        }
+
+        async function loadMemorizeSurah(surahNumber) {
+            if (!surahNumber) return;
+            const container = document.getElementById('memorize-ayahs-container');
+            container.style.display = 'block';
+            container.innerHTML = '<div style="text-align:center; color: var(--primary);"><i class="fa-solid fa-spinner fa-spin"></i> جاري التحميل...</div>';
+            
+            try {
+                const res = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/ar.alafasy`);
+                const data = await res.json();
+                memorizeAyahs = data.data.ayahs;
+                
+                let html = '';
+                memorizeAyahs.forEach((ayah, index) => {
+                    let text = ayah.text;
+                    if (surahNumber != 1 && ayah.numberInSurah === 1) text = text.replace(/^بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ\s*/, '');
+                    html += `<div class="ayah-wrapper mem-ayah" id="mem-ayah-${index}" onclick="playMemorizeAyah(${index})"><span class="ayah">${text}</span> <span class="ayah-number">(${ayah.numberInSurah})</span></div> `;
+                });
+                container.innerHTML = html;
+                currentMemorizeIndex = -1;
+            } catch (e) {
+                container.innerHTML = 'حدث خطأ في التحميل.';
+            }
+        }
+
+        function playMemorizeAyah(index) {
+            if (index < 0 || index >= memorizeAyahs.length) return;
+            currentMemorizeIndex = index;
+            
+            document.querySelectorAll('.mem-ayah').forEach(el => el.classList.remove('active-ayah'));
+            const activeEl = document.getElementById(`mem-ayah-${index}`);
+            activeEl.classList.add('active-ayah');
+            
+            activeEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            memAudio.src = memorizeAyahs[index].audio;
+            memAudio.play();
+        }
+
+        memAudio.addEventListener('ended', () => {
+            playMemorizeAyah(currentMemorizeIndex + 1);
+        });
+
+        async function searchAyah() {
+            const query = document.getElementById('search-ayah-input').value.trim();
+            if (!query) return;
+            const resultsDiv = document.getElementById('search-results');
+            resultsDiv.innerHTML = '<div style="text-align:center; color: var(--primary);"><i class="fa-solid fa-spinner fa-spin"></i> جاري البحث...</div>';
+            
+            try {
+                const res = await fetch(`https://api.alquran.cloud/v1/search/${query}/all/ar`);
+                const data = await res.json();
+                
+                if (data.data.count === 0) {
+                    resultsDiv.innerHTML = '<div class="glass-panel" style="padding:15px; color:red; text-align:center;">لم يتم العثور على نتائج.</div>';
+                    return;
+                }
+
+                let html = `<div class="glass-panel" style="padding:20px;"><h4>نتائج البحث (${data.data.count}):</h4><ul style="list-style:none; padding:0; margin-top:15px;">`;
+                const limit = Math.min(data.data.count, 10);
+                for (let i = 0; i < limit; i++) {
+                    const match = data.data.matches[i];
+                    html += `<li style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                        <div style="font-family: 'Amiri', serif; font-size: 22px; color: var(--primary); line-height:1.8;">${match.text}</div>
+                        <small style="color: var(--text-gray); font-weight:bold;">سورة ${match.surah.name} - آية ${match.numberInSurah}</small>
+                    </li>`;
+                }
+                html += '</ul></div>';
+                resultsDiv.innerHTML = html;
+            } catch (e) {
+                resultsDiv.innerHTML = '<div class="glass-panel" style="padding:15px; color:red; text-align:center;">حدث خطأ في الاتصال بالخادم.</div>';
+            }
+        }
+
         // --- 5. Tasks Logic ---
         function saveTasks() {
             const tasksState = Array.from(document.querySelectorAll('.task-item')).map(task => task.classList.contains('completed'));
@@ -1044,6 +1322,9 @@
             element.classList.toggle('completed');
             updateProgress();
             saveTasks();
+            if (element.classList.contains('completed')) {
+                showToast('عاش! تمت المهمة بنجاح 🌿', 'fa-check-circle');
+            }
         }
 
         function updateProgress() {
@@ -1053,7 +1334,7 @@
             document.getElementById('task-progress-text').innerText = `${completed}/${total}`;
         }
 
-        // --- 6. Adhkar Logic (With Update Fix) ---
+        // --- 6. Adhkar Logic ---
         const adhkarData = {
             morning: [
                 { text: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ...", count: 1 },
@@ -1085,7 +1366,6 @@
             const list = document.getElementById('adhkar-list');
             list.innerHTML = '';
             
-            // التأكد من تطابق طول المصفوفة لمنع الـ undefined
             if (!adhkarState[type] || adhkarState[type].length !== adhkarData[type].length) { 
                 adhkarState[type] = adhkarData[type].map(d => d.count);
                 localStorage.setItem('athar_adhkar', JSON.stringify(adhkarState));
@@ -1136,7 +1416,6 @@
                 const el = document.getElementById(containers[key]);
                 let target = key === 'bank' ? el : el.querySelector('.slot-content');
                 
-                // Keep the hint for empty bank
                 if (key === 'bank') {
                     el.innerHTML = '<div class="task-bank-hint">اسحب المهمة للجدول لتحديد الوقت</div>';
                 } else {
@@ -1189,7 +1468,6 @@
             let taskObj = null;
             let sourceKey = null;
 
-            // Find task and remove from old location
             for (let key in tasksData) {
                 const index = tasksData[key].findIndex(t => t.id === taskId);
                 if (index > -1) {
@@ -1248,7 +1526,6 @@
                 let diffTime = Math.abs(currentDate - lastRecord);
                 let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
                 
-                // إذا مر أكثر من يوم ولم يسجل، يتم تصفير الستريك
                 if (diffDays > 1) {
                     qiyamData.streak = 0;
                     localStorage.setItem('athar_qiyam', JSON.stringify(qiyamData));
@@ -1267,15 +1544,15 @@
                 
                 localStorage.setItem('athar_qiyam', JSON.stringify(qiyamData));
                 updateQiyamUI();
+                showToast("تقبل الله طاعتك 🌙", "fa-moon");
             }
         }
-
 
         // --- 9. Notifications & PWA Installs ---
         function requestNotificationPermission() {
             if ("Notification" in window) {
                 Notification.requestPermission().then(p => {
-                    if(p === "granted") alert("تم تفعيل الإشعارات بنجاح.");
+                    if(p === "granted") showToast("تم تفعيل الإشعارات بنجاح.", "fa-check");
                 });
             }
         }
@@ -1308,6 +1585,7 @@
 
         // --- Init ---
         window.onload = () => {
+            updateTotalFocusDisplay();
             checkNewDay(); 
             fetchReciters(); 
             fetchSurahs();
@@ -1316,7 +1594,6 @@
             updateQiyamUI();
             loadAdhkar('morning', document.querySelector('.adhkar-tab'));
             
-            // تم ضبط الموقع ليكون موط، الوادي الجديد كما تم توضيحه مسبقًا
             const defaultLat = 25.4856;
             const defaultLng = 28.9806;
             
